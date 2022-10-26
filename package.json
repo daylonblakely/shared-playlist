@@ -12,7 +12,10 @@
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/passport": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
+    "passport": "^0.6.0",
+    "passport-spotify": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "tslib": "^2.3.0"
@@ -30,6 +33,7 @@
     "@nrwl/workspace": "15.0.3",
     "@types/jest": "28.1.1",
     "@types/node": "18.7.1",
+    "@types/passport-spotify": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "eslint": "~8.15.0",
