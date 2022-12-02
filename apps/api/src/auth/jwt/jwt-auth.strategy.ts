@@ -4,7 +4,11 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SESSION_COOKIE_KEY } from '../../config/constants';
 
-export type JwtPayload = { sub: string; displayName: string };
+export type JwtPayload = {
+  sub: string;
+  displayName: string;
+  accessToken: string;
+};
 
 @Injectable()
 export class JwtAuthStrategy extends PassportStrategy(Strategy) {
@@ -16,7 +20,7 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
       //   if (req && req.cookies) {
       //     token = req.cookies[SESSION_COOKIE_KEY];
       //   }
-      token = req?.headers?.cookie.split('=')[1];
+      token = req?.headers?.cookie?.split('=')[1];
       return token;
     };
 
@@ -28,6 +32,10 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    return { id: payload.sub, displayName: payload.displayName };
+    return {
+      id: payload.sub,
+      displayName: payload.displayName,
+      accessToken: payload.accessToken,
+    };
   }
 }
