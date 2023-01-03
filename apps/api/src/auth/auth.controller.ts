@@ -21,6 +21,7 @@ export class AuthController {
     res.cookie(SESSION_COOKIE_KEY, accessToken, {
       httpOnly: true,
       sameSite: 'lax',
+      signed: true,
     });
     return res.redirect('/api/');
   }
