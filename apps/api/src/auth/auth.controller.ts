@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtAuthService } from './jwt/jwt-auth.service';
-import { SpotifyGuard } from './spotify/spotify.guard';
+import { SpotifyGuard } from '../guards/spotify.guard';
 import { SESSION_COOKIE_KEY } from '../config/constants';
 
 @Controller('auth')

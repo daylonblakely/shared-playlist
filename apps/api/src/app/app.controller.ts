@@ -1,8 +1,8 @@
-import { Controller, Req, Get, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 
 import { AppService } from './app.service';
-import { JwtAuthGuard } from '../auth/jwt/jwt-auth.guard';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { SpotifyToken } from '../decorators/spotify-token.decorator';
 
 @Controller()
 export class AppController {
@@ -15,7 +15,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('private')
-  getPrivate(@Req() req: Request) {
-    return req.user;
+  getPrivate(@SpotifyToken() token: string) {
+    return token;
   }
 }
