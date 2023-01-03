@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import * as Joi from 'joi';
+import Joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
+import { PlaylistModule } from '../playlist/playlist.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UsersModule } from '../users/users.module';
       validationSchema: Joi.object({
         SPOTIFY_CLIENT_ID: Joi.string().required(),
         SPOTIFY_CLIENT_SECRET: Joi.string().required(),
+        SPOTIFY_CALLBACK_URL: Joi.string().required(),
         MONGO_URI: Joi.string().required(),
         MONGO_DB_NAME: Joi.string().required(),
       }),
@@ -28,6 +30,7 @@ import { UsersModule } from '../users/users.module';
     }),
     AuthModule,
     UsersModule,
+    PlaylistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -24,6 +24,7 @@
     "passport-spotify": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
+    "spotify-web-api-node": "^5.0.2",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -43,6 +44,7 @@
     "@types/node": "18.7.1",
     "@types/passport-jwt": "^3.0.7",
     "@types/passport-spotify": "^2.0.1",
+    "@types/spotify-web-api-node": "^5.0.7",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
     "eslint": "~8.15.0",
