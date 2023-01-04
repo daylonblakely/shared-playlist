@@ -13,14 +13,26 @@ import { PlaylistService } from './playlist.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { SpotifyToken } from '../decorators/spotify-token.decorator';
 
-@UseGuards(JwtAuthGuard)
 @Controller('playlists')
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
   @Post()
-  async create(@Body() createPlaylistDto, @SpotifyToken() token: string) {
+  @UseGuards(JwtAuthGuard)
+  async createPlaylist(
+    @Body() createPlaylistDto,
+    @SpotifyToken() token: string
+  ) {
     return this.playlistService.create(token);
+  }
+
+  @Post()
+  @UseGuards(JwtAuthGuard)
+  async sendPlaylistInvite(
+    @Body() playlistInviteDto,
+    @SpotifyToken() token: string
+  ) {
+    return this.playlistService.sendPlaylistInvite(token);
   }
 
   //   @Get()
