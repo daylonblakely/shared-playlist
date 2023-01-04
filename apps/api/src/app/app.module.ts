@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from '../auth/auth.module';
 import { UsersModule } from '../users/users.module';
-import { PlaylistModule } from '../playlist/playlist.module';
+import { PlaylistModule } from '../playlists/playlists.module';
 
 @Module({
   imports: [

@@ -6,10 +6,11 @@ import {
   Delete,
   Body,
   Param,
+  Req,
   UseGuards,
 } from '@nestjs/common';
-import { PlaylistService } from './playlist.service';
-// import { CreatePlaylistDto, UpdatePlaylistDto } from './dto';
+import { PlaylistService } from './playlists.service';
+import { CreatePlaylistDto } from './dtos/create-playlist.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { SpotifyToken } from '../decorators/spotify-token.decorator';
 
@@ -20,19 +21,20 @@ export class PlaylistController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async createPlaylist(
-    @Body() createPlaylistDto,
-    @SpotifyToken() token: string
+    @Body() createPlaylistDto: CreatePlaylistDto,
+    @SpotifyToken() userAccessToken: string
   ) {
-    return this.playlistService.create(token);
+    return this.playlistService.create(createPlaylistDto, userAccessToken);
   }
 
-  @Post()
+  @Post('/sendInvite')
   @UseGuards(JwtAuthGuard)
   async sendPlaylistInvite(
+    @Req() req,
     @Body() playlistInviteDto,
-    @SpotifyToken() token: string
+    @SpotifyToken() userAccessToken: string
   ) {
-    return this.playlistService.sendPlaylistInvite(token);
+    return this.playlistService.sendPlaylistInvite(req.user.displayName);
   }
 
   //   @Get()
