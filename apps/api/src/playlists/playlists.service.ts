@@ -29,7 +29,8 @@ export class PlaylistService {
     // create the playlist
     const { body } = await this.spotifyApi.createPlaylist(playlist.name, {
       description: playlist.description,
-      public: true,
+      public: false, //public must be false for collaborative playlists
+      collaborative: true,
     });
 
     // save playlist to db and link to user
@@ -41,16 +42,9 @@ export class PlaylistService {
     return createdPlaylist.save();
   }
 
-  //   async findAll(userAccessToken: string) {
-  //     // Get the user's access toke
-  //     this.spotifyApi.setAccessToken(userAccessToken);
-
-  //     // Get the user's playlists
-  //     const userPlaylistsResponse = await this.spotifyApi.getUserPlaylists(
-  //       createPlaylistDto.userId
-  //     );
-  //     return userPlaylistsResponse.body;
-  //   }
+  // async findAll(userAccessToken: string) {
+  //   return this.playlistModel.find({user})
+  // }
 
   //   async findOne(id: string, userAccessToken: string) {
   //     this.spotifyApi.setAccessToken(userAccessToken);

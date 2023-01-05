@@ -5,6 +5,7 @@ import { AuthController } from './auth.controller';
 import { SpotifyStrategy } from './spotify/spotify.strategy';
 import { JwtAuthService } from './jwt/jwt-auth.service';
 import { JwtAuthStrategy } from './jwt/jwt-auth.strategy';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { JwtAuthStrategy } from './jwt/jwt-auth.strategy';
       },
       inject: [ConfigService],
     }),
+    UsersModule,
   ],
   controllers: [AuthController],
   providers: [JwtAuthService, JwtAuthStrategy, SpotifyStrategy],
