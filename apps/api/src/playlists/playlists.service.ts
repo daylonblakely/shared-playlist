@@ -33,7 +33,8 @@ export class PlaylistService {
       collaborative: true,
     });
 
-    // save playlist to db and link to user
+    // save playlist to db
+    // TODO: link to user
     const createdPlaylist = new this.playlistModel({
       name: body.name,
       spotifyId: body.id,
@@ -42,7 +43,7 @@ export class PlaylistService {
     return createdPlaylist.save();
   }
 
-  // async findAll(userAccessToken: string) {
+  // async findAll(userId: string) {
   //   return this.playlistModel.find({user})
   // }
 
