@@ -7,7 +7,7 @@ export type UserDocument = User & Document;
 @Schema()
 export class User {
   @Prop()
-  id: string;
+  _id: mongoose.ObjectId;
 
   @Prop({ required: true, unique: true })
   spotifyId: string;

@@ -33,6 +33,7 @@ export class SpotifyStrategy extends PassportStrategy(Strategy, 'spotify') {
     console.log('validating user');
 
     let user = await this.usersService.findOneBySpotifyId(id);
+    console.log(user);
     if (!user) {
       user = await this.usersService.create({
         spotifyId: id,
@@ -41,6 +42,6 @@ export class SpotifyStrategy extends PassportStrategy(Strategy, 'spotify') {
       });
     }
 
-    return { user, accessToken };
+    return { id: user._id, displayName: user.displayName, accessToken };
   }
 }

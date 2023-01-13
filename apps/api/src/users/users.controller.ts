@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { User } from './schemas/user.schema';
 
@@ -7,8 +17,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   // TODO - remove this and add a protected route to get current user
-  @Get()
-  async findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+  @UseGuards(JwtAuthGuard)
+  @Get('/me')
+  async findMe(@Req() req): Promise<User> {
+    return this.usersService.findById(req.user.id);
   }
 }
