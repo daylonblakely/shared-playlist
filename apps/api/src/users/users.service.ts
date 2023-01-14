@@ -10,12 +10,21 @@ export class UsersService {
     @InjectModel(User.name) private readonly userModel: Model<UserDocument>
   ) {}
 
-  async findById(id: string): Promise<User> {
-    return this.userModel.findById(new Types.ObjectId(id)).exec();
+  async findById(id: Types.ObjectId): Promise<User> {
+    return this.userModel.findById(id).exec();
   }
 
   async findOneBySpotifyId(spotifyId: string): Promise<User> {
     return this.userModel.findOne({ spotifyId }).exec();
+  }
+
+  async addPlaylist(
+    userId: Types.ObjectId,
+    playlistId: Types.ObjectId
+  ): Promise<User> {
+    return this.userModel.findByIdAndUpdate(userId, {
+      $push: { playlists: playlistId },
+    });
   }
 
   async create(user: CreateUserDto): Promise<User> {

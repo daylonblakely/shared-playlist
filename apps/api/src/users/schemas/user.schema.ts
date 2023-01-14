@@ -1,13 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
 import { Playlist } from '../../playlists/schemas/playlist.schema';
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop()
-  _id: mongoose.ObjectId;
+  _id: Types.ObjectId;
 
   @Prop({ required: true, unique: true })
   spotifyId: string;

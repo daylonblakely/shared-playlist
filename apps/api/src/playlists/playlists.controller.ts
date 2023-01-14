@@ -21,10 +21,15 @@ export class PlaylistController {
   @Post()
   @UseGuards(JwtAuthGuard)
   async createPlaylist(
+    @Req() req,
     @Body() createPlaylistDto: CreatePlaylistDto,
     @SpotifyToken() userAccessToken: string
   ) {
-    return this.playlistService.create(createPlaylistDto, userAccessToken);
+    return this.playlistService.create(
+      createPlaylistDto,
+      req.user.id,
+      userAccessToken
+    );
   }
 
   @Post('/sendInvite')

@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import SpotifyWebApi from 'spotify-web-api-node';
 import { Playlist, PlaylistDocument } from './schemas/playlist.schema';
 import { CreatePlaylistDto } from './dtos/create-playlist.dto';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class PlaylistService {
@@ -13,6 +14,7 @@ export class PlaylistService {
   constructor(
     @InjectModel(Playlist.name)
     private readonly playlistModel: Model<PlaylistDocument>,
+    private readonly usersService: UsersService,
     private configService: ConfigService
   ) {
     this.spotifyApi = new SpotifyWebApi({
@@ -22,9 +24,12 @@ export class PlaylistService {
     });
   }
 
-  async create(playlist: CreatePlaylistDto, userAccessToken: string) {
+  async create(
+    playlist: CreatePlaylistDto,
+    userId,
+    userAccessToken: string
+  ): Promise<Playlist> {
     this.spotifyApi.setAccessToken(userAccessToken);
-    console.log(await this.spotifyApi.getMe());
 
     // create the playlist
     const { body } = await this.spotifyApi.createPlaylist(playlist.name, {
@@ -34,13 +39,15 @@ export class PlaylistService {
     });
 
     // save playlist to db
-    // TODO: link to user
-    const createdPlaylist = new this.playlistModel({
+    const createdPlaylist = await new this.playlistModel({
       name: body.name,
       spotifyId: body.id,
-    });
+    }).save();
 
-    return createdPlaylist.save();
+    // link to user
+    await this.usersService.addPlaylist(userId, createdPlaylist._id);
+
+    return createdPlaylist;
   }
 
   // async findAll(userId: string) {

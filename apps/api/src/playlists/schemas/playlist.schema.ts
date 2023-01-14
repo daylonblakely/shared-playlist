@@ -1,12 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export type PlaylistDocument = Playlist & Document;
 
 @Schema()
 export class Playlist {
-  @Prop()
-  id: string;
+  _id: Types.ObjectId;
 
   @Prop()
   spotifyId: string;

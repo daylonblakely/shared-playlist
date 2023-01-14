@@ -16,7 +16,6 @@ import { User } from './schemas/user.schema';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // TODO - remove this and add a protected route to get current user
   @UseGuards(JwtAuthGuard)
   @Get('/me')
   async findMe(@Req() req): Promise<User> {
