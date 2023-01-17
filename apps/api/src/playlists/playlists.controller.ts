@@ -15,11 +15,11 @@ import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { SpotifyToken } from '../decorators/spotify-token.decorator';
 
 @Controller('playlists')
+@UseGuards(JwtAuthGuard)
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
   async createPlaylist(
     @Req() req,
     @Body() createPlaylistDto: CreatePlaylistDto,
@@ -32,25 +32,13 @@ export class PlaylistController {
     );
   }
 
-  @Post('/sendInvite')
-  @UseGuards(JwtAuthGuard)
-  async sendPlaylistInvite(
-    @Req() req,
-    @Body() playlistInviteDto,
+  @Get(':id')
+  async findOne(
+    @Param('id') id: string,
     @SpotifyToken() userAccessToken: string
   ) {
-    return this.playlistService.sendPlaylistInvite(req.user.displayName);
+    return this.playlistService.findOne(id, userAccessToken);
   }
-
-  //   @Get()
-  //   async findAll() {
-  //     return this.playlistService.findAll();
-  //   }
-
-  //   @Get(':id')
-  //   async findOne(@Param('id') id: string) {
-  //     return this.playlistService.findOne(id);
-  //   }
 
   //   @Put(':id')
   //   async update(@Param('id') id: string, @Body() updatePlaylistDto) {
@@ -61,4 +49,13 @@ export class PlaylistController {
   //   async remove(@Param('id') id: string) {
   //     return this.playlistService.remove(id);
   //   }
+
+  @Post('/sendInvite')
+  async sendPlaylistInvite(
+    @Req() req,
+    @Body() playlistInviteDto,
+    @SpotifyToken() userAccessToken: string
+  ) {
+    return this.playlistService.sendPlaylistInvite(req.user.displayName);
+  }
 }
