@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import mongoose, { Document, Types } from 'mongoose';
+import { User } from '../../users/schemas/user.schema';
 
 export type PlaylistDocument = Playlist & Document;
 
@@ -12,6 +13,9 @@ export class Playlist {
 
   @Prop()
   name: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  createdBy: User;
 }
 
 export const PlaylistSchema = SchemaFactory.createForClass(Playlist);

@@ -27,6 +27,15 @@ export class UsersService {
     });
   }
 
+  async removePlaylistFromUsers(playlistId: Types.ObjectId) {
+    return this.userModel
+      .updateMany(
+        { playlists: { $in: [playlistId] } },
+        { $pull: { playlists: playlistId } }
+      )
+      .exec();
+  }
+
   async create(user: CreateUserDto): Promise<User> {
     const newUser = new this.userModel({
       spotifyId: user.spotifyId,

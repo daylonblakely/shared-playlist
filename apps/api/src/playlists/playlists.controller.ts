@@ -32,6 +32,11 @@ export class PlaylistController {
     );
   }
 
+  @Get()
+  async findAll(@Req() req) {
+    return this.playlistService.findAll(req.user.id);
+  }
+
   @Get(':id')
   async findOne(
     @Param('id') id: string,
@@ -45,10 +50,10 @@ export class PlaylistController {
   //     return this.playlistService.update(id, updatePlaylistDto);
   //   }
 
-  //   @Delete(':id')
-  //   async remove(@Param('id') id: string) {
-  //     return this.playlistService.remove(id);
-  //   }
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return this.playlistService.remove(id);
+  }
 
   @Post('/sendInvite')
   async sendPlaylistInvite(

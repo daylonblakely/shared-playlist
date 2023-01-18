@@ -42,6 +42,7 @@ export class PlaylistService {
     const createdPlaylist = await new this.playlistModel({
       name: body.name,
       spotifyId: body.id,
+      createdBy: userId,
     }).save();
 
     // link to user
@@ -50,7 +51,14 @@ export class PlaylistService {
     return createdPlaylist;
   }
 
-  async findOne(playlistId: string, userAccessToken: string) {
+  async findAll(userId: string): Promise<Playlist[]> {
+    return this.playlistModel.find({ createdBy: userId }).exec();
+  }
+
+  async findOne(
+    playlistId: string,
+    userAccessToken: string
+  ): Promise<SpotifyApi.SinglePlaylistResponse> {
     const { spotifyId } = await this.playlistModel.findById(
       new Types.ObjectId(playlistId)
     );
@@ -78,13 +86,12 @@ export class PlaylistService {
   //     return updatePlaylistResponse.body;
   //   }
 
-  //   TODO - figure out how to delete playlists
-  //   async remove(id: string, userAccessToken: string) {
-  //
-  //    this.spotifyApi.setAccessToken(userAccessToken);
-
-  //     const removePlaylistResponse = ?
-  //   }
+  async remove(playlistId: string) {
+    // delete playlist in db
+    // playlists need to be deleted manually off spotify
+    // middleware cascades deletes
+    return this.playlistModel.findByIdAndDelete(playlistId).exec();
+  }
 
   async sendPlaylistInvite(currentUser: string) {
     return currentUser;
