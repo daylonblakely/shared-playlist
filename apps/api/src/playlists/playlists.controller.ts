@@ -8,6 +8,7 @@ import {
   Param,
   Req,
   UseGuards,
+  NotFoundException,
 } from '@nestjs/common';
 import { PlaylistService } from './playlists.service';
 import { CreatePlaylistDto } from './dtos/create-playlist.dto';
@@ -42,7 +43,9 @@ export class PlaylistController {
     @Param('id') id: string,
     @SpotifyToken() userAccessToken: string
   ) {
-    return this.playlistService.findOne(id, userAccessToken);
+    const playlist = await this.playlistService.findOne(id, userAccessToken);
+    if (!playlist) throw new NotFoundException();
+    return playlist;
   }
 
   //   @Put(':id')
@@ -51,8 +54,13 @@ export class PlaylistController {
   //   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.playlistService.remove(id);
+  async remove(
+    @Param('id') id: string,
+    @SpotifyToken() userAccessToken: string
+  ) {
+    const playlist = await this.playlistService.remove(id, userAccessToken);
+    if (!playlist) throw new NotFoundException();
+    return playlist;
   }
 
   @Post('/sendInvite')

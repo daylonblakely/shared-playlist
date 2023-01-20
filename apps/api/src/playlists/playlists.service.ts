@@ -59,10 +59,13 @@ export class PlaylistService {
     playlistId: string,
     userAccessToken: string
   ): Promise<SpotifyApi.SinglePlaylistResponse> {
-    const { spotifyId } = await this.playlistModel.findById(
+    const playlist = await this.playlistModel.findById(
       new Types.ObjectId(playlistId)
     );
 
+    if (!playlist) return undefined;
+
+    const { spotifyId } = playlist;
     this.spotifyApi.setAccessToken(userAccessToken);
 
     const { body } = await this.spotifyApi.getPlaylist(spotifyId);
@@ -86,10 +89,24 @@ export class PlaylistService {
   //     return updatePlaylistResponse.body;
   //   }
 
-  async remove(playlistId: string) {
-    // delete playlist in db
+  async remove(playlistId: string, userAccessToken: string) {
     // playlists need to be deleted manually off spotify
-    // middleware cascades deletes
+    const playlist = await this.playlistModel.findById(
+      new Types.ObjectId(playlistId)
+    );
+
+    if (!playlist) return undefined;
+
+    const { spotifyId } = playlist;
+    this.spotifyApi.setAccessToken(userAccessToken);
+
+    // set playlist to private (TODO: see if this removes other followers)
+    // unfollow playlist, spotify api doesnt have delete
+    await this.spotifyApi.changePlaylistDetails(spotifyId, { public: false });
+    await this.spotifyApi.unfollowPlaylist(spotifyId);
+
+    // delete playlist in db
+    // middlware cascades delete to all user objects
     return this.playlistModel.findByIdAndDelete(playlistId).exec();
   }
 
