@@ -23,6 +23,7 @@ export class AuthController {
       sameSite: 'lax',
       signed: true,
     });
-    return res.redirect('/api/');
+
+    return res.redirect('http://localhost:4200');
   }
 }
