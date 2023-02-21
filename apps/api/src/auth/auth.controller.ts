@@ -2,11 +2,18 @@ import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { JwtAuthService } from './jwt/jwt-auth.service';
 import { SpotifyGuard } from '../guards/spotify.guard';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { SESSION_COOKIE_KEY } from '../config/constants';
 
 @Controller('auth')
 export class AuthController {
   constructor(private jwtAuthService: JwtAuthService) {}
+
+  @Get('/login/success')
+  @UseGuards(JwtAuthGuard)
+  success(@Req() req, @Res() res) {
+    return res.send({ displayName: req.user.displayName });
+  }
 
   @Get('/spotify')
   @UseGuards(SpotifyGuard)

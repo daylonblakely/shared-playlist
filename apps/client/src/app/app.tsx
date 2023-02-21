@@ -1,6 +1,12 @@
 import { Route, Routes, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useSpotifyLoginMutation } from './store/services/auth';
+import { login } from './store/slices/authSlice';
 
 export function App() {
+  const dispatch = useDispatch();
+  const [spotifyLogin] = useSpotifyLoginMutation();
+
   return (
     <>
       <div role="navigation">
@@ -12,12 +18,35 @@ export function App() {
             <Link to="/page-2">Page 2</Link>
           </li>
           <li>
-            <a href="/api/auth/spotify">log in</a>
+            <a href="http://localhost:5000/api/auth/spotify">log in</a>
+          </li>
+          <li>
+            <button
+              onClick={async () => {
+                try {
+                  const { displayName } = await spotifyLogin().unwrap();
+                  dispatch(login(displayName));
+                  // navigate('/');
+                } catch (err) {
+                  console.log(err);
+                }
+              }}
+            >
+              login
+            </button>
           </li>
           <li>
             <button
               onClick={() => {
-                fetch('api/users/me');
+                fetch('http://localhost:5000/api/private', {
+                  method: 'GET',
+                  credentials: 'include',
+                  // headers: {
+                  //   // Accept: 'application/json',
+                  //   // 'Content-Type': 'application/json',
+                  //   'Access-Control-Allow-Credentials': 'true',
+                  // },
+                }).then((res) => console.log(res));
               }}
             >
               private
