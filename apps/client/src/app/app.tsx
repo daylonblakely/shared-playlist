@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './hooks/storeHooks';
-import { useSpotifyLoginMutation } from './store/services/auth';
-import { login, logout } from './store/slices/authSlice';
+import { logout, loginAsync } from './store/slices/authSlice';
 
 export function App() {
   const dispatch = useAppDispatch();
-  const [spotifyLogin] = useSpotifyLoginMutation();
 
   const {
     auth: { isAuthenticated, displayName },
@@ -14,12 +12,9 @@ export function App() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      spotifyLogin()
-        .unwrap()
-        .then(({ displayName }) => dispatch(login(displayName)))
-        .catch(() => dispatch(logout()));
+      dispatch(loginAsync());
     }
-  }, [isAuthenticated, dispatch, spotifyLogin]);
+  }, [isAuthenticated, dispatch]);
 
   return (
     <>
@@ -41,11 +36,6 @@ export function App() {
                 fetch('http://localhost:5000/api/private', {
                   method: 'GET',
                   credentials: 'include',
-                  // headers: {
-                  //   // Accept: 'application/json',
-                  //   // 'Content-Type': 'application/json',
-                  //   'Access-Control-Allow-Credentials': 'true',
-                  // },
                 }).then((res) => console.log(res));
               }}
             >
