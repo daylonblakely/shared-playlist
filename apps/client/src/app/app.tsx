@@ -1,11 +1,25 @@
+import { useEffect } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from './hooks/storeHooks';
 import { useSpotifyLoginMutation } from './store/services/auth';
-import { login } from './store/slices/authSlice';
+import { login, logout } from './store/slices/authSlice';
 
 export function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [spotifyLogin] = useSpotifyLoginMutation();
+
+  const {
+    auth: { isAuthenticated, displayName },
+  } = useAppSelector((state) => state);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      spotifyLogin()
+        .unwrap()
+        .then(({ displayName }) => dispatch(login(displayName)))
+        .catch(() => dispatch(logout()));
+    }
+  }, [isAuthenticated, dispatch, spotifyLogin]);
 
   return (
     <>
@@ -20,21 +34,7 @@ export function App() {
           <li>
             <a href="http://localhost:5000/api/auth/spotify">log in</a>
           </li>
-          <li>
-            <button
-              onClick={async () => {
-                try {
-                  const { displayName } = await spotifyLogin().unwrap();
-                  dispatch(login(displayName));
-                  // navigate('/');
-                } catch (err) {
-                  console.log(err);
-                }
-              }}
-            >
-              login
-            </button>
-          </li>
+          <li>{isAuthenticated ? <span>{displayName}</span> : null}</li>
           <li>
             <button
               onClick={() => {
