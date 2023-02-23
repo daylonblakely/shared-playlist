@@ -11,23 +11,37 @@ const initialState: AuthState = {
   displayName: null,
 };
 
-export const loginAsync = createAsyncThunk('auth/login', async () => {
-  const response = await fetch('http://localhost:5000/api/auth/login/success', {
-    method: 'GET',
-    credentials: 'include',
-  });
-  return (await response.json()).displayName;
-});
+export const loginAsync = createAsyncThunk(
+  'auth/login',
+  async (_, { rejectWithValue }) => {
+    const response = await fetch(
+      'http://localhost:5000/api/auth/login/success',
+      {
+        method: 'GET',
+        credentials: 'include',
+      }
+    );
+    const { displayName } = await response.json();
+
+    return displayName || rejectWithValue('');
+  }
+);
+
+export const logoutAsync = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    const response = await fetch('http://localhost:5000/api/auth/logout', {
+      method: 'GET',
+      credentials: 'include',
+    });
+    return response.ok || rejectWithValue('');
+  }
+);
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    logout(state) {
-      state.isAuthenticated = false;
-      state.displayName = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(loginAsync.fulfilled, (state, action: PayloadAction<string>) => {
@@ -37,11 +51,12 @@ export const authSlice = createSlice({
       .addCase(loginAsync.rejected, (state) => {
         state.isAuthenticated = false;
         state.displayName = null;
+      })
+      .addCase(logoutAsync.fulfilled, (state) => {
+        state.isAuthenticated = false;
+        state.displayName = null;
       });
   },
 });
-
-// Action creators are generated for each case reducer function
-export const { logout } = authSlice.actions;
 
 export default authSlice.reducer;

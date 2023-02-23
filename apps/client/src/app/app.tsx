@@ -1,13 +1,14 @@
 import { useEffect } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './hooks/storeHooks';
-import { logout, loginAsync } from './store/slices/authSlice';
+import { loginAsync } from './store/slices/authSlice';
+import { Header } from './components/Header';
 
 export function App() {
   const dispatch = useAppDispatch();
 
   const {
-    auth: { isAuthenticated, displayName },
+    auth: { isAuthenticated },
   } = useAppSelector((state) => state);
 
   useEffect(() => {
@@ -18,32 +19,7 @@ export function App() {
 
   return (
     <>
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-          <li>
-            <a href="http://localhost:5000/api/auth/spotify">log in</a>
-          </li>
-          <li>{isAuthenticated ? <span>{displayName}</span> : null}</li>
-          <li>
-            <button
-              onClick={() => {
-                fetch('http://localhost:5000/api/private', {
-                  method: 'GET',
-                  credentials: 'include',
-                }).then((res) => console.log(res));
-              }}
-            >
-              private
-            </button>
-          </li>
-        </ul>
-      </div>
+      <Header />
       <Routes>
         <Route
           path="/"

@@ -33,4 +33,11 @@ export class AuthController {
 
     return res.redirect('http://localhost:4200');
   }
+
+  @Get('/logout')
+  @UseGuards(JwtAuthGuard)
+  logout(@Req() req, @Res() res) {
+    res.clearCookie(SESSION_COOKIE_KEY);
+    req.logout(() => res.send());
+  }
 }
