@@ -5,12 +5,19 @@ import { Button, Container, Menu, Sidebar, Icon } from 'semantic-ui-react';
 import { useAppDispatch, useAppSelector } from '../hooks/storeHooks';
 import { logoutAsync } from '../store/slices/authSlice';
 
+export interface NavRoutes {
+  path: string;
+  title: string;
+  requireAuth: boolean;
+  element: ReactNode;
+}
 interface Props {
   children?: ReactNode;
   // any props that come into the component
+  routes: Array<NavRoutes>;
 }
 
-export function Header({ children }: Props) {
+export function Header({ children, routes }: Props) {
   const isMobile = useMediaQuery('(max-width: 767px)');
   //   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 991px)');
   //   const isComputer = useMediaQuery('(min-width: 992px)');
@@ -25,15 +32,14 @@ export function Header({ children }: Props) {
 
   const renderLinks = () => {
     return [
-      <Menu.Item active={location.pathname === '/'} key={1}>
-        <Link to="/">Home</Link>
-      </Menu.Item>,
-      isAuthenticated && (
-        <Menu.Item active={location.pathname === '/page-2'} key={2}>
-          <Link to="/page-2">Page 2</Link>
-        </Menu.Item>
+      ...routes.map(({ path, title, requireAuth }, i) =>
+        !requireAuth || isAuthenticated ? (
+          <Menu.Item active={location.pathname === path} key={i}>
+            <Link to={path}>{title}</Link>
+          </Menu.Item>
+        ) : null
       ),
-      <Menu.Item position={isMobile ? undefined : 'right'} key={3}>
+      <Menu.Item position={isMobile ? undefined : 'right'} key={999}>
         {isAuthenticated ? (
           <Button as="button" onClick={() => dispatch(logoutAsync())}>
             Log out
@@ -69,7 +75,7 @@ export function Header({ children }: Props) {
     );
   };
 
-  const MobileNav = ({ children }: Props) => {
+  const MobileNav = ({ children }: { children: ReactNode }) => {
     return (
       <Sidebar.Pushable>
         <Sidebar

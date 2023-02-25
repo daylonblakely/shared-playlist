@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from './hooks/storeHooks';
 import { loginAsync } from './store/slices/authSlice';
-import { Header } from './components/Header';
+import { Header, NavRoutes } from './components/Header';
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -17,27 +17,37 @@ export function App() {
     }
   }, [isAuthenticated, dispatch]);
 
+  const routes: Array<NavRoutes> = [
+    {
+      path: '/',
+      title: 'Home',
+      requireAuth: false,
+      element: (
+        <div style={{ backgroundColor: 'red' }}>
+          This is the generated root route.{' '}
+          <Link to="/page-2">Click here for page 2.</Link>
+        </div>
+      ),
+    },
+    {
+      path: '/page-2',
+      title: 'Page 2',
+      requireAuth: true,
+      element: (
+        <div>
+          <Link to="/">Click here to go back to root page.</Link>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <>
-      <Header>
+      <Header routes={routes}>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <div style={{ backgroundColor: 'red' }}>
-                This is the generated root route.{' '}
-                <Link to="/page-2">Click here for page 2.</Link>
-              </div>
-            }
-          />
-          <Route
-            path="/page-2"
-            element={
-              <div>
-                <Link to="/">Click here to go back to root page.</Link>
-              </div>
-            }
-          />
+          {routes.map(({ path, element }, i) => (
+            <Route path={path} element={element} key={i} />
+          ))}
         </Routes>
         <div style={{ height: 2000 }}></div>
       </Header>
