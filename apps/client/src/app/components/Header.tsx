@@ -47,7 +47,7 @@ export function Header({ children, routes }: Props) {
         ) : (
           <a href="http://localhost:5000/api/auth/spotify">
             <Button as="button" primary={true}>
-              Log in
+              Login with Spotify
             </Button>
           </a>
         )}
