@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { api, User } from '../../services/api';
-import type { RootState } from '../../store';
+import { api } from '../../services/api';
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -15,9 +14,7 @@ const initialState: AuthState = {
 const slice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    logout: () => initialState,
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       //   .addMatcher(api.endpoints.login.matchPending, (state, action) => {
@@ -38,8 +35,4 @@ const slice = createSlice({
   },
 });
 
-export const { logout } = slice.actions;
 export default slice.reducer;
-
-export const selectIsAuthenticated = (state: RootState) =>
-  state.auth.isAuthenticated;

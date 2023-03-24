@@ -2,8 +2,7 @@ import React, { useState, ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useMediaQuery } from '@react-hook/media-query';
 import { Button, Container, Menu, Sidebar, Icon } from 'semantic-ui-react';
-import { useAppDispatch, useAppSelector } from '../hooks/storeHooks';
-import { logoutAsync } from '../store/slices/authSlice';
+import { useAppSelector } from '../hooks/storeHooks';
 import { useLogoutMutation } from '../services/api';
 
 export interface NavRoutes {
@@ -24,12 +23,11 @@ export function Header({ children, routes }: Props) {
   //   const isComputer = useMediaQuery('(min-width: 992px)');
   const location = useLocation();
 
-  const dispatch = useAppDispatch();
   const {
-    auth: { isAuthenticated, displayName },
+    auth: { isAuthenticated },
   } = useAppSelector((state) => state);
 
-  const [logout, { isLoading }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
 
   const [sidebarOpened, setSidebarOpened] = useState(false);
 
