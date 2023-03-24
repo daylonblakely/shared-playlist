@@ -4,6 +4,7 @@ import { useMediaQuery } from '@react-hook/media-query';
 import { Button, Container, Menu, Sidebar, Icon } from 'semantic-ui-react';
 import { useAppDispatch, useAppSelector } from '../hooks/storeHooks';
 import { logoutAsync } from '../store/slices/authSlice';
+import { useLogoutMutation } from '../services/api';
 
 export interface NavRoutes {
   path: string;
@@ -28,6 +29,8 @@ export function Header({ children, routes }: Props) {
     auth: { isAuthenticated, displayName },
   } = useAppSelector((state) => state);
 
+  const [logout, { isLoading }] = useLogoutMutation();
+
   const [sidebarOpened, setSidebarOpened] = useState(false);
 
   const renderLinks = () => {
@@ -41,7 +44,7 @@ export function Header({ children, routes }: Props) {
       ),
       <Menu.Item position={isMobile ? undefined : 'right'} key={999}>
         {isAuthenticated ? (
-          <Button as="button" onClick={() => dispatch(logoutAsync())}>
+          <Button as="button" onClick={() => logout()}>
             Log out
           </Button>
         ) : (

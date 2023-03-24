@@ -1,21 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from './hooks/storeHooks';
-import { loginAsync } from './store/slices/authSlice';
+import { useAppSelector } from './hooks/storeHooks';
+import { useLoginQuery } from './services/api';
 import { Header, NavRoutes } from './components/Header';
 
 export function App() {
-  const dispatch = useAppDispatch();
-
   const {
     auth: { isAuthenticated },
   } = useAppSelector((state) => state);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      dispatch(loginAsync());
-    }
-  }, [isAuthenticated, dispatch]);
+  useLoginQuery(undefined, { skip: isAuthenticated });
 
   const routes: Array<NavRoutes> = [
     {
