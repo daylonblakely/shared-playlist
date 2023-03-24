@@ -1,9 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-// todo move to libs
-export interface User {
-  displayName: string;
-}
+import { User } from '@spotify-app/types';
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
@@ -41,7 +37,7 @@ export const api = createApi({
    * If you want all endpoints defined in the same file, they could be included here instead
    */
   endpoints: (build) => ({
-    login: build.query<User, void>({
+    login: build.query<Partial<User>, void>({
       query: () => 'auth/login/success',
     }),
     logout: build.mutation<void, void>({
@@ -49,11 +45,5 @@ export const api = createApi({
     }),
   }),
 });
-
-// export const enhancedApi = api.enhanceEndpoints({
-//   endpoints: () => ({
-//     getPost: () => 'test',
-//   }),
-// });
 
 export const { useLoginQuery, useLogoutMutation } = api;

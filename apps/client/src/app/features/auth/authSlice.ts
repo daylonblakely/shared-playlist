@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { User } from '@spotify-app/types';
 import { api } from '../../services/api';
 
-export interface AuthState {
+export interface AuthState extends Partial<User> {
   isAuthenticated: boolean;
-  displayName: string | null;
 }
 
 const initialState: AuthState = {

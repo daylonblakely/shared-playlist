@@ -1,11 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
+import { Playlist as IPlaylist } from '@spotify-app/types';
 import { User } from '../../users/schemas/user.schema';
 
 export type PlaylistDocument = Playlist & Document;
 
 @Schema()
-export class Playlist {
+export class Playlist implements IPlaylist {
   _id: Types.ObjectId;
 
   @Prop()

@@ -1,11 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, Types } from 'mongoose';
+import { User as IUser } from '@spotify-app/types';
 import { Playlist } from '../../playlists/schemas/playlist.schema';
 
 export type UserDocument = User & Document;
 
 @Schema()
-export class User {
+export class User implements IUser {
   _id: Types.ObjectId;
 
   @Prop({ required: true, unique: true })

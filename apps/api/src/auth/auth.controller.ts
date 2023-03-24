@@ -11,8 +11,8 @@ export class AuthController {
 
   @Get('/login/success')
   @UseGuards(JwtAuthGuard)
-  success(@Req() req, @Res() res) {
-    return res.send({ displayName: req.user.displayName });
+  success(@Req() req) {
+    return req.user;
   }
 
   @Get('/spotify')

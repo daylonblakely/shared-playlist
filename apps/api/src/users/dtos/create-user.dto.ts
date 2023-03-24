@@ -1,6 +1,7 @@
 import { IsString } from 'class-validator';
+import { User } from '@spotify-app/types';
 
-export class CreateUserDto {
+export class CreateUserDto implements Omit<User, '_id' | 'playlists'> {
   @IsString()
   spotifyId: string;
 
