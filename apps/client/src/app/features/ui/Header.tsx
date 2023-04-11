@@ -2,8 +2,8 @@ import React, { useState, ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useMediaQuery } from '@react-hook/media-query';
 import { Button, Container, Menu, Sidebar, Icon } from 'semantic-ui-react';
-import { useAppSelector } from '../hooks/storeHooks';
-import { useLogoutMutation } from '../services/api';
+import { useAppSelector } from '../../hooks/storeHooks';
+import { useLogoutMutation } from '../../services/api';
 
 export interface NavRoutes {
   path: string;
