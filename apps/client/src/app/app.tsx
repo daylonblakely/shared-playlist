@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useAppSelector } from './hooks/storeHooks';
 import { useLoginQuery } from './services/api';
 import { Header, NavRoutes } from './features/ui/Header';
+import RequireAuth from './features/requireAuth';
 import PlaylistsHome from './features/playlists/PlaylistsHome';
 import NewPlaylist from './features/playlists/NewPlaylist';
 
@@ -32,8 +33,19 @@ export function App() {
     <>
       <Header routes={routes}>
         <Routes>
-          {routes.map(({ path, element }, i) => (
-            <Route path={path} element={element} key={i} />
+          {routes.map(({ path, requireAuth, element }, i) => (
+            <Route
+              path={path}
+              element={
+                requireAuth
+                  ? RequireAuth({
+                      fallback: <div>Please sign in to view this page</div>,
+                      children: element,
+                    })
+                  : element
+              }
+              key={i}
+            />
           ))}
         </Routes>
       </Header>
