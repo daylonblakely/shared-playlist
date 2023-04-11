@@ -89,7 +89,9 @@ export function Header({ children, routes }: Props) {
         >
           {renderLinks()}
         </Sidebar>
-        <Sidebar.Pusher dimmed={sidebarOpened}>{children}</Sidebar.Pusher>
+        <Sidebar.Pusher style={{ height: '100vh' }} dimmed={sidebarOpened}>
+          {children}
+        </Sidebar.Pusher>
       </Sidebar.Pushable>
     );
   };
