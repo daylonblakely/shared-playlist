@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useAppSelector } from './hooks/storeHooks';
 import { useLoginQuery } from './services/api';
 import { Header, NavRoutes } from './features/ui/Header';
-import RequireAuth from './features/requireAuth';
+import RequireAuth from './features/auth/RequireAuth';
 import PlaylistsHome from './features/playlists/PlaylistsHome';
 import NewPlaylist from './features/playlists/NewPlaylist';
 

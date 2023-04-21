@@ -1,9 +1,7 @@
 import { IsString } from 'class-validator';
-import { Playlist } from '@spotify-app/types';
+import { CreatePlaylist } from '@spotify-app/types';
 
-export class CreatePlaylistDto
-  implements Omit<Playlist, '_id' | 'spotifyId' | 'createdBy'>
-{
+export class CreatePlaylistDto implements CreatePlaylist {
   @IsString()
   name: string;
 

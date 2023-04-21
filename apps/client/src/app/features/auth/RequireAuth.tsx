@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { useAppSelector } from '../hooks/storeHooks';
+import { useAppSelector } from '../../hooks/storeHooks';
 
 interface Props {
   fallback: React.ReactNode;

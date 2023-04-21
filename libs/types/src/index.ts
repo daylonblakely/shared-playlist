@@ -1,2 +1,3 @@
-export * from './lib/user';
-export * from './lib/playlist';
+export * from './lib/interfaces/user';
+export * from './lib/interfaces/playlist';
+export * from './lib/interfaces/create-playlist';
