@@ -1,5 +1,5 @@
 import { api } from './api';
-import { Playlist } from '@spotify-app/types';
+import { Playlist, CreatePlaylist } from '@spotify-app/types';
 
 type PlaylistsResponse = Playlist[];
 
@@ -14,7 +14,7 @@ export const playlistsApi = api.injectEndpoints({
         { type: 'Playlists' as const, id: 'LIST' },
       ],
     }),
-    addPlaylist: builder.mutation<Playlist, Partial<Playlist>>({
+    addPlaylist: builder.mutation<Playlist, CreatePlaylist>({
       query: (playlist) => ({
         url: 'playlists',
         method: 'POST',
