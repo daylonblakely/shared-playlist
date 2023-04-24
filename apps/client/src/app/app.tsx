@@ -6,6 +6,7 @@ import { Header, NavRoutes } from './features/ui/Header';
 import RequireAuth from './features/auth/RequireAuth';
 import PlaylistsHome from './features/playlists/PlaylistsHome';
 import NewPlaylist from './features/playlists/NewPlaylist';
+import PlaylistDetail from './features/playlists/PlaylistDetail';
 
 export function App() {
   const {
@@ -29,24 +30,35 @@ export function App() {
     },
   ];
 
+  const nonNavRoutes = [
+    {
+      path: '/playlist/:id',
+      title: 'Playlist Detail',
+      requireAuth: true,
+      element: <PlaylistDetail />,
+    },
+  ];
+
   return (
     <>
       <Header routes={routes}>
         <Routes>
-          {routes.map(({ path, requireAuth, element }, i) => (
-            <Route
-              path={path}
-              element={
-                requireAuth
-                  ? RequireAuth({
-                      fallback: <div>Please sign in to view this page</div>,
-                      children: element,
-                    })
-                  : element
-              }
-              key={i}
-            />
-          ))}
+          {routes
+            .concat(nonNavRoutes)
+            .map(({ path, requireAuth, element }, i) => (
+              <Route
+                path={path}
+                element={
+                  requireAuth
+                    ? RequireAuth({
+                        fallback: <div>Please sign in to view this page</div>,
+                        children: element,
+                      })
+                    : element
+                }
+                key={i}
+              />
+            ))}
         </Routes>
       </Header>
 

@@ -15,6 +15,9 @@ export class Playlist implements IPlaylist {
   @Prop()
   name: string;
 
+  @Prop()
+  description: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   createdBy: User;
 }

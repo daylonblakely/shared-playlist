@@ -1,5 +1,5 @@
 import { api } from './api';
-import { Playlist, CreatePlaylist } from '@spotify-app/types';
+import { Playlist, CreatePlaylist, FindOnePlaylist } from '@spotify-app/types';
 
 type PlaylistsResponse = Playlist[];
 
@@ -22,7 +22,7 @@ export const playlistsApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: 'Playlists', id: 'LIST' }],
     }),
-    getPlaylist: builder.query<Playlist, string>({
+    getPlaylist: builder.query<FindOnePlaylist, string>({
       query: (id) => ({
         url: `playlists/${id}`,
       }),

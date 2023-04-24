@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import SpotifyWebApi from 'spotify-web-api-node';
+import { FindOnePlaylist } from '@spotify-app/types';
 import { Playlist, PlaylistDocument } from './schemas/playlist.schema';
 import { CreatePlaylistDto } from './dtos/create-playlist.dto';
 import { UsersService } from '../users/users.service';
@@ -28,7 +29,7 @@ export class PlaylistService {
     playlist: CreatePlaylistDto,
     userId: Types.ObjectId,
     userAccessToken: string
-  ): Promise<Playlist> {
+  ): Promise<FindOnePlaylist> {
     this.spotifyApi.setAccessToken(userAccessToken);
 
     // create the playlist
@@ -42,13 +43,14 @@ export class PlaylistService {
     const createdPlaylist = await new this.playlistModel({
       name: body.name,
       spotifyId: body.id,
+      description: playlist.description,
       createdBy: userId,
     }).save();
 
     // link to user
     await this.usersService.addPlaylist(userId, createdPlaylist._id);
 
-    return createdPlaylist;
+    return { ...createdPlaylist.toObject(), spotifyFields: body };
   }
 
   async findAll(userId: string): Promise<Playlist[]> {
@@ -58,7 +60,7 @@ export class PlaylistService {
   async findOne(
     playlistId: string,
     userAccessToken: string
-  ): Promise<SpotifyApi.SinglePlaylistResponse> {
+  ): Promise<FindOnePlaylist> {
     const playlist = await this.playlistModel.findById(
       new Types.ObjectId(playlistId)
     );
@@ -70,7 +72,7 @@ export class PlaylistService {
 
     const { body } = await this.spotifyApi.getPlaylist(spotifyId);
 
-    return body;
+    return { ...playlist.toObject(), spotifyFields: body };
   }
 
   //   async update(
