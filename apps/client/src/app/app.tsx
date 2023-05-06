@@ -30,7 +30,7 @@ export function App() {
     },
   ];
 
-  const nonNavRoutes = [
+  const nonNavRoutes: ConcatArray<NavRoutes> = [
     {
       path: '/playlist/:id',
       title: 'Playlist Detail',

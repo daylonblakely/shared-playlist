@@ -76,35 +76,22 @@ export function Header({ children, routes }: Props) {
     );
   };
 
-  const MobileNav = ({ children }: { children: ReactNode }) => {
-    return (
-      <Sidebar.Pushable>
-        <Sidebar
-          as={Menu}
-          animation="overlay"
-          //   inverted
-          onHide={() => setSidebarOpened(false)}
-          vertical
-          visible={sidebarOpened}
-        >
-          {renderLinks()}
-        </Sidebar>
-        <Sidebar.Pusher style={{ height: '100vh' }} dimmed={sidebarOpened}>
-          {children}
-        </Sidebar.Pusher>
-      </Sidebar.Pushable>
-    );
-  };
-
-  return isMobile ? (
-    <MobileNav>
-      <NavBar />
-      {children}
-    </MobileNav>
-  ) : (
-    <>
-      <NavBar />
-      {children}
-    </>
+  return (
+    <Sidebar.Pushable>
+      <Sidebar
+        as={Menu}
+        animation="overlay"
+        //   inverted
+        onHide={() => setSidebarOpened(false)}
+        vertical
+        visible={sidebarOpened}
+      >
+        {renderLinks()}
+      </Sidebar>
+      <Sidebar.Pusher style={{ height: '100vh' }} dimmed={sidebarOpened}>
+        <NavBar />
+        {children}
+      </Sidebar.Pusher>
+    </Sidebar.Pushable>
   );
 }
